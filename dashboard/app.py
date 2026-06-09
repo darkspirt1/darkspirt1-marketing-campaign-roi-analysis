@@ -120,14 +120,15 @@ st.markdown("""
 # ─── Load Data ─────────────────────────────────────────────────
 @st.cache_data
 def load_data():
-    df = pd.read_csv(
-        r"C:\Users\jiten\OneDrive\Desktop\Custmer Campaign analysis\data\marketing_campaign_dataset.csv")
-    df['Acquisition_Cost'] = df['Acquisition_Cost'].replace(
-        '[\$,]', '', regex=True).astype(float)
-    df['Duration_Days'] = df['Duration'].str.extract('(\d+)').astype(int)
-    df['Date'] = pd.to_datetime(df['Date'])
-    df['CTR'] = (df['Clicks'] / df['Impressions']) * 100
-    df['Month'] = df['Date'].dt.to_period('M').astype(str)
+    import os
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_path = os.path.join(base_dir, "data", "marketing_campaign_dataset.csv")
+    df = pd.read_csv(data_path)
+    df['Acquisition_Cost'] = df['Acquisition_Cost'].replace('[\$,]', '', regex=True).astype(float)
+    df['Duration_Days']    = df['Duration'].str.extract('(\d+)').astype(int)
+    df['Date']             = pd.to_datetime(df['Date'])
+    df['CTR']              = (df['Clicks'] / df['Impressions']) * 100
+    df['Month']            = df['Date'].dt.to_period('M').astype(str)
     return df
 
 
